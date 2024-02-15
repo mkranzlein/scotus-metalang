@@ -5,7 +5,7 @@ scratch.ipynb
 models/*
 
 # Data
-data/*.jsonl
+data/*/*.jsonl
 
 # Launch configs
 .vscode
