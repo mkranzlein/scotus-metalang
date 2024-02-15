@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scotus-metalang"
+version = "0.0"
+authors = [
+    {name = "Michael Kranzlein"}
+]

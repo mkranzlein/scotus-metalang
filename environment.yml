@@ -1,0 +1,4 @@
+name: scotus-metalang
+dependencies:
+  - jsonlines
+  - jupyterlab
