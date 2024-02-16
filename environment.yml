@@ -5,6 +5,7 @@ channels:
 dependencies:
   - cupy
   - huggingface::transformers
+  - ipywidgets
   - jupyterlab
   - pip
   - python
