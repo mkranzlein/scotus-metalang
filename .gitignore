@@ -1,6 +1,9 @@
 # Notebook for tinkering/debugging
 scratch.ipynb
 
+# Saved sentence segmenter model
+**/model-last*
+
 # Save models
 models/*
 
