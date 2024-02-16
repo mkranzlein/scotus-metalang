@@ -1,4 +1,17 @@
 name: scotus-metalang
+channels:
+  - conda-forge
+  - nvidia
 dependencies:
-  - jsonlines
+  - cupy
+  - huggingface::transformers
   - jupyterlab
+  - pip
+  - python
+  - pytorch::pytorch
+  - pytorch::pytorch-cuda=12.1
+  - spacy
+  - spacy-transformers
+  - pip:
+    - jsonlines
+    - spacy-lookups-data
