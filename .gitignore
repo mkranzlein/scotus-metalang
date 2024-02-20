@@ -1,5 +1,5 @@
 # Notebook for tinkering/debugging
-scratch.ipynb
+*scratch.ipynb
 
 # Saved sentence segmenter model
 **/model-last*
@@ -9,7 +9,7 @@ models/*
 
 # Data
 data/*/*.jsonl
-
+data/harvard_cap/*
 # Launch configs
 .vscode
 
