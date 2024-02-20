@@ -8,3 +8,9 @@ version = "0.0"
 authors = [
     {name = "Michael Kranzlein"}
 ]
+
+# https://stackoverflow.com/questions/50155464/using-pytest-with-a-src-layer
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
