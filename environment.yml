@@ -7,6 +7,7 @@ dependencies:
   - huggingface::transformers
   - ipywidgets
   - jupyterlab
+  - pandas
   - pip
   - python
   - pytorch::pytorch
@@ -16,4 +17,5 @@ dependencies:
   - pip:
     - jsonlines
     - spacy-lookups-data
-    - tokenizers>=0.11.1,!=0.11.3,<0.13
+    - tokenizers
+    #- tokenizers>=0.11.1,!=0.11.3,<0.13
