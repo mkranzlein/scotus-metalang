@@ -8,8 +8,11 @@
 models/*
 
 # Data
-data/*/*.jsonl
-data/harvard_cap/*
+data/*/*
+
+# Logs
+logs/*
+
 # Launch configs
 .vscode
 
