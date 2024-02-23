@@ -1,21 +1,25 @@
 name: scotus-metalang
 channels:
-  - conda-forge
   - nvidia
+  - conda-forge
 dependencies:
+  # pyg will break pytorch gpu installation if pytorch isn't higher in list
+  - pytorch::pytorch
+  - pytorch::pytorch-cuda=12.1
   - cupy
   - huggingface::transformers
   - ipywidgets
+  - jaxtyping
+  - jsonlines
   - jupyterlab
+  - networkx  # Graph networks for HiPool
   - pandas
   - pip
   - python
-  - pytorch::pytorch
-  - pytorch::pytorch-cuda=12.1
-  - spacy
+  - pyg::pyg  # PyTorch Geometric for HiPool
+  - spacy=3.4.3
   - spacy-transformers
+  - tokenizers
+  - typeguard
   - pip:
-    - jsonlines
     - spacy-lookups-data
-    - tokenizers
-    #- tokenizers>=0.11.1,!=0.11.3,<0.13
