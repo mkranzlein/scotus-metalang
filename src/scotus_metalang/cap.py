@@ -91,7 +91,7 @@ def save_opinion(case_id, docket_number, decision_date, opinion: dict, opinion_n
         return {"status": f"op_{opinion_num}_no_author,", "author": None}
     author = opinion["author"].lower().replace(" ", "_")
     opinion_type = opinion["type"].lower()
-    text = opinion["text"].lower()
+    text = opinion["text"]
     simplified_json = {"cap_id": case_id, "docket_number": docket_number, "decision_date": decision_date,
                        "author": author, "opinion_type": opinion_type, "text": text}
     save_dir = Path(f"data/harvard_cap/{author}")
