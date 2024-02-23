@@ -14,6 +14,8 @@ This is in-progress work that builds on the models developed in [mkranzlein/HiPo
     pip install --upgrade build
     pip install -e .
     ```
+3. Install HiPool locally.
+    - TODO: add link and build command
 
 ### Caselaw Access Project (CAP) API Setup
 1. Get an [API token](https://case.law/docs/site_features/api) for Harvard's [Caselaw Access Project](https://case.law/).
