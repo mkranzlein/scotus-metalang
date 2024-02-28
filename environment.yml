@@ -16,6 +16,7 @@ dependencies:
   - pandas
   - pip
   - python
+  - python-dotenv
   - pyg::pyg  # PyTorch Geometric for HiPool
   - spacy=3.4.3
   - spacy-transformers
