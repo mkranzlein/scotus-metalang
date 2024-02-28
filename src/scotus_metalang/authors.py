@@ -53,3 +53,8 @@ AUTHOR_MAP = {
     "per_curiam.": "percuriam",
     "|,;i7chief_justice_rehnquist": "rehnquist"
 }
+"""Dictionary with messy author names as keys and 
+consolidated, correct authors names as values.
+
+E.g.  AUTHOR_MAP['justice_sc_alia,'] -> 'scalia'
+"""
