@@ -34,7 +34,7 @@ def get_sentences(doc) -> list[str]:
     sentences = []
     for sent in doc.sents:
         tokens = pre_tokenizer.pre_tokenize_str(sent.text)
-        tokens = [x[0] for x in tokens]
+        tokens = [x[0].lower() for x in tokens]
         tokens = " ".join(tokens)
         sentences.append(tokens)
     return sentences
@@ -55,10 +55,10 @@ def predict_opinion(filepath):
     opinion_sentences = list(chain(*opinion_sentences))
     opinion_predictions = []
     for sentence in opinion_sentences:
-        sentence = sentence.split(" ")
-        if len(sentence) >=512:
+        if len(sentence) >= 512:
             print(f"sentence of len {len(sentence)} too long, skipping it...")
             continue
+        sentence = sentence.split(" ")
         result = predict_sentence_toks(sentence)
         if result is not None:
             opinion_predictions.append((result))
@@ -72,7 +72,7 @@ def predict_sentence_toks(sentence: list[str]) -> Float[np.ndarray, "n k"]:
     with torch.no_grad():
         x = bert_tokenizer(sentence, is_split_into_words=True, return_attention_mask=True,
                            return_token_type_ids=True, add_special_tokens=True, return_tensors="pt")
-        if x["input_ids"] >= 512:
+        if len(x["input_ids"][0]) >= 512:
             print(f"sentence of len {len(sentence)} too long, skipping it...")
         output = token_model(x["input_ids"].cuda(), mask=x["attention_mask"].cuda(),
                              token_type_ids=x["token_type_ids"].cuda())
