@@ -6,6 +6,7 @@ dependencies:
   # pyg will break pytorch gpu installation if pytorch isn't higher in list
   - pytorch::pytorch
   - pytorch::pytorch-cuda=12.1
+  - aiohttp
   - cupy
   - huggingface::transformers
   - ipywidgets
