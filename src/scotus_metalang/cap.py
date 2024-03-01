@@ -108,39 +108,3 @@ def save_opinion(case_id, docket_number, decision_date, opinion: dict, opinion_n
     with open(Path(save_dir, f"{docket_number}.json"), "w") as f:
         json.dump(simplified_json, f)
     return opinion_params
-
-
-# def save_opinion(case_id, docket_number, decision_date, opinion: dict, opinion_num) -> dict:
-#     """Saves an opinion as a .json file and returns dict.
-
-#     Returns dict with keys:
-#       - status: 'success' or op_{num}_no_author
-#       - author_status:
-#       - author: str or None
-#     """
-#     if (author := opinion["author"]) is None:
-#         return {"status": f"op_{opinion_num}_no_author,", "author_status": "n/a", "author": None}
-
-#     author = author.lower().replace(" ", "_")
-#     author_status = "unknown"
-#     if (known_author := AUTHOR_MAP.get(author, None)) is not None:
-#         if known_author == "special":
-#             author_status = "special"
-#         else:
-#             author_status = "known"
-#             author = known_author
-
-#     opinion_type = opinion["type"].lower()
-#     text = opinion["text"]
-#     simplified_json = {"cap_id": case_id, "docket_number": docket_number, "decision_date": decision_date,
-#                        "author": author, "opinion_type": opinion_type, "text": text}
-#     if author_status == "known":
-#         save_dir = Path(f"data/cap/known_authors/{author}")
-#     elif author_status == "special":
-#         save_dir = Path(f"data/cap/speical_authors/{author}")
-#     else:
-#         save_dir = Path(f"data/cap/unknown_authors/{author}")
-#     Path.mkdir(save_dir, parents=True, exist_ok=True)
-#     with open(Path(save_dir, f"{docket_number}.json"), "w") as f:
-#         json.dump(simplified_json, f)
-#     return {"status": "success", "author_status": author_status, "author": author}
