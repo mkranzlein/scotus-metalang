@@ -20,6 +20,7 @@ async def main():
     async with aiohttp.ClientSession(connector=connector) as session:
         for docket_number in docket_numbers:
             # TODO: figure out what term case was part of based on decision
+            year = ""
             request_url = f"'https://api.oyez.org/cases/{year}/{docket_number}'"
             async with session.get(request_url) as response:
                 return await response.json()
