@@ -1,26 +1,26 @@
 """Interactions with Harvard Caselaw Access Project."""
 
 import json
-
 from pathlib import Path
+
+import aiohttp
 
 from scotus_metalang.authors import AUTHOR_MAP
 
 
-async def case_json_by_id(case_id: int, session) -> dict:
+async def case_json_by_id(case_id: int, session: aiohttp.ClientSession) -> dict:
     request_url = f"https://api.case.law/v1/cases/{case_id}?full_case=true"
     async with session.get(request_url) as response:
         return await response.json()
 
 
-async def cases_by_docket_number(docket_number, session) -> dict:
+async def cases_by_docket_number(docket_number: str, session: aiohttp.ClientSession) -> dict:
     """Gets all SCOTUS cases matching input docket number.
 
     Example docket number: 14-9496
 
     Returns: a dict with relevant keys 'count' and 'results'.
     """
-
     # 9009 is the SCOTUS court_id
     request_url = f'https://api.case.law/v1/cases?court_id=9009&docket_number="{docket_number}"'
     async with session.get(request_url) as response:
@@ -39,7 +39,16 @@ def id_of_longest_casebody(api_response: dict) -> int:
     return case_id
 
 
-async def process_opinions_by_docket_number(docket_number: str, session) -> dict:
+def opinions_key_exists(case_json: dict) -> bool:
+    try:
+        # Check expected keys exist
+        _ = len(case_json["casebody"]["data"]["opinions"])
+        return True
+    except KeyError:
+        return False
+
+
+async def process_opinions_by_docket_number(docket_number: str, session: aiohttp.ClientSession) -> dict:
     """Saves opinions if possible. Returns dict of info to update db."""
     api_response = await cases_by_docket_number(docket_number, session)
 
@@ -56,14 +65,10 @@ async def process_opinions_by_docket_number(docket_number: str, session) -> dict
     status = case_json["casebody"]["status"]
 
     if status != "ok":
-        # e.g. 'error_limit_exceeded'
+        # E.g. 'error_limit_exceeded'
         raise RuntimeError(f"Bad API response status: {status}")
 
-    try:
-        # Check expected keys exist
-        _ = len(case_json["casebody"]["data"]["opinions"])
-    except KeyError:
-        # Case doesn't have 'opinions' key
+    if not opinions_key_exists(case_json):
         case_params = {"docket_number": docket_number,
                        "case_status": "opinions_inaccessible",
                        "selected_case_id": None,
@@ -84,7 +89,9 @@ async def process_opinions_by_docket_number(docket_number: str, session) -> dict
     return case_params, opinions_as_params
 
 
-def save_opinion(case_id, docket_number, decision_date, opinion: dict, opinion_num) -> dict:
+def save_opinion(case_id: int, docket_number: str,
+                 decision_date: str, opinion: dict, opinion_num: int) -> dict:
+    """Saves opinion JSON and returns dict of logging info."""
     opinion_params = {"docket_number": docket_number, "opinion_number": opinion_num,
                       "cap_author": None, "author": None}
 
