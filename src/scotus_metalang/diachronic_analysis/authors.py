@@ -262,5 +262,50 @@ AUTHOR_MAP = {
 """Dictionary with messy author names as keys and 
 consolidated, correct authors names as values.
 
-E.g.  AUTHOR_MAP['justice_sc_alia,'] -> 'scalia'
+E.g.  AUTHOR_MAP["justice_sc_alia,"] -> "scalia"
 """
+
+justice_to_term = {"rehnquist": (1972, 2005),
+                   "brennan": (1956, 1990),
+                   "white": (1962, 1993),
+                   "marshall": (1967, 1991),
+                   "blackmun": (1970, 1994),
+                   "powell": (1972, 1987),
+                   "stevens": (1975, 2010),
+                   "oconnor": (1981, 2006),
+                   "scalia": (1986, 2016),
+                   "kennedy": (1988, 2018),
+                   "souter": (1990, 2009),
+                   "thomas": (1991, 2100),
+                   "ginsburg": (1993, 2020),
+                   "breyer": (1994, 2022),
+                   "roberts": (2005, 2100),
+                   "alito": (2006, 2100),
+                   "sotomayor": (2009, 2100),
+                   "kagan": (2010, 2100),
+                   "gorsuch": (2017, 2100),
+                   "kavanaugh": (2018, 2100)}
+
+# Sort justices based on their start year
+ORDERED_JUSTICES = dict(sorted(justice_to_term.items(), key=lambda x: x[1]))
+
+JUSTICE_TO_IDEOLOGY = {"brennan": "liberal",
+                       "white": "liberal",
+                       "marshall": "liberal",
+                       "blackmun": "conservative",
+                       "powell": "conservative",
+                       "rehnquist": "conservative",
+                       "stevens": "conservative",
+                       "oconnor": "conservative",
+                       "scalia": "conservative",
+                       "kennedy": "conservative",
+                       "souter": "conservative",
+                       "thomas": "conservative",
+                       "ginsburg": "liberal",
+                       "breyer": "liberal",
+                       "roberts": "conservative",
+                       "alito": "conservative",
+                       "sotomayor": "liberal",
+                       "kagan": "liberal",
+                       "gorsuch": "conservative",
+                       "kavanaugh": ""}
