@@ -259,7 +259,7 @@ AUTHOR_MAP = {
     "souter,_and_justice_ginsburg": "souter",
     "the_chief_justice,": "special",
 }
-"""Dictionary with messy author names as keys and 
+"""Dictionary with messy author names as keys and
 consolidated, correct authors names as values.
 
 E.g.  AUTHOR_MAP["justice_sc_alia,"] -> "scalia"
@@ -285,6 +285,31 @@ justice_to_term = {"rehnquist": (1972, 2005),
                    "kagan": (2010, 2100),
                    "gorsuch": (2017, 2100),
                    "kavanaugh": (2018, 2100)}
+
+JUSTICE_TO_SCDB_NAME = {"rehnquist": "WHRehnquist",
+                        "brennan": "WJBrennan",
+                        "white": "BRWhite",
+                        "marshall": "TMarshall",
+                        "blackmun": "HABlackmun",
+                        "powell": "LFPowell",
+                        "stevens": "JPStevens",
+                        "oconnor": "SDOConnor",
+                        "scalia": "AScalia",
+                        "kennedy": "AMKennedy",
+                        "souter": "DHSouter",
+                        "thomas": "CThomas",
+                        "ginsburg": "RBGinsburg",
+                        "breyer": "SGBreyer",
+                        "roberts": "JGRoberts",
+                        "alito": "SAAlito",
+                        "sotomayor": "SSotomayor",
+                        "kagan": "EKagan",
+                        "gorsuch": "NMGorsuch",
+                        "kavanaugh": "BMKavanaugh",
+                        "barrett": "ACBarrett",
+                        "jackson": "KBJackson"}
+
+SCDB_NAME_TO_JUSTICE = {v: k for k, v in JUSTICE_TO_SCDB_NAME.items()}
 
 # Sort justices based on their start year
 ORDERED_JUSTICES = dict(sorted(justice_to_term.items(), key=lambda x: x[1]))
