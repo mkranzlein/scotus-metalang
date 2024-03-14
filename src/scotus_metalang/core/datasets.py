@@ -91,10 +91,12 @@ def split_dataset(size: int, validation_split, seed, shuffle=False):
 def collate_sentences(batch):
     # Discard sent if over 512 wordpieces
     batch = [sent for sent in batch if len(sent.input_ids) <= 512]
-    batch_input_ids = [torch.tensor(sent.input_ids, dtype=torch.long) for sent in batch]
+    if batch == []:
+        return None
+    batch_input_ids = [sent.input_ids for sent in batch]
     batch_labels = [sent.binary_token_labels for sent in batch]
     padded_input_ids = pad_sequence(batch_input_ids, batch_first=True).cuda()
-    padded_mask = padded_input_ids.not_equal(0).long().cuda()
+    padded_mask = padded_input_ids.not_equal(0).long()
     padded_token_type_ids = torch.zeros(padded_input_ids.shape, dtype=torch.long, device=torch.device("cuda"))
     return {"input_ids": padded_input_ids,
             "attention_mask": padded_mask,
