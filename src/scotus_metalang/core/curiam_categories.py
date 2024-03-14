@@ -16,3 +16,7 @@ REDUCED_CATEGORIES = [
     "Metalinguistic Cue",
     "Direct Quote",
     "Legal Source"]
+
+HARD_CATEGORIES = [
+    "Focal Term",
+    "Metalinguistic Cue"]
