@@ -5,7 +5,13 @@
 **/model-last*
 
 # Save models
-models/*
+saved_models/*
+
+# Tensorboard runs
+runs/*
+
+# Model predictions
+predictions/*
 
 # Data
 data/*/*
