@@ -8,20 +8,25 @@ dependencies:
   - pytorch::pytorch-cuda=12.1
   - aiohttp
   - cupy
+  - h5py
   - huggingface::transformers
   - ipywidgets
-  - jaxtyping
   - jsonlines
   - jupyterlab
   - networkx  # Graph networks for HiPool
-  - pandas
+  - pandas=2.1.0 # Pyg collision with pandas' 2.2.1 numexpr requirement
   - pip
+  - pytables # For pandas .to_hdf
   - python
   - python-dotenv
   - pyg::pyg  # PyTorch Geometric for HiPool
   - spacy=3.4.3
   - spacy-transformers
+  - tensorboard
   - tokenizers
   - typeguard
   - pip:
+    - jaxtyping
+    - torcheval
+    - snakeviz
     - spacy-lookups-data
