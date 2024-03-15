@@ -25,6 +25,10 @@ See [file](../null_authors.csv)
         - expected https://cite.case.law/us/506/19/
         - got https://cite.case.law/us/506/1087/12103909/
 - Oversplitting as in https://api.case.law/v1/cases/12455275/?full_case=true with null-author opinion with complete text of "SEPARATE OPINION"
+- Empty opinion as in https://api.case.law/v1/cases/12623718/?full_case=true
+    - Here this was an issue of picking the write opinion due to length heuristic
+    - got https://cite.case.law/s-ct/139/626/12623718/
+    - expected https://cite.case.law/s-ct/140/2412/12626632/
 
 
 On rerun:
