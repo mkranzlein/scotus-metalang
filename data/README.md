@@ -16,17 +16,19 @@
 See [file](../null_authors.csv)
 
 - Unknown cause (e.g https://api.case.law/v1/cases/1481163/?full_case=true)
-- Opinion starts with finding (e.g. "Held : The judgment is reversed.\n723 F.3d 434, reversed.\nJustice KENNEDY de" in https://api.case.law/v1/cases/12581203/?full_case=true)
+- Opinion starts with finding as in https://api.case.law/v1/cases/12581203/?full_case=true 
+    >"Held : The judgment is reversed.\n723 F.3d 434, reversed.\nJustice KENNEDY de"
 - Missing big chunk of opinion
-    - Compare Thomas' plurality opinionhttps://api.case.law/v1/cases/12616942/?full_case=true with https://supreme.justia.com/cases/federal/us/583/16-498/#tab-opinion-3858471
-    This case is also interesting because it's a 6-3 decision with no ootc, just a 3-justice plurality opinion by Thomas
+    - Compare Thomas' plurality opinion https://api.case.law/v1/cases/12616942/?full_case=true with https://supreme.justia.com/cases/federal/us/583/16-498/#tab-opinion-3858471
+    - This case is also interesting because it's a 6-3 decision with no ootc, just a 3-justice plurality opinion by Thomas
 - Incorrect case grabbed based on opinion length heuristic
     - See https://old.case.law/search/#/?page=1&ordering=relevance&docket_number=91-6646
         - expected https://cite.case.law/us/506/19/
         - got https://cite.case.law/us/506/1087/12103909/
-- Oversplitting as in https://api.case.law/v1/cases/12455275/?full_case=true with null-author opinion with complete text of "SEPARATE OPINION"
+- Oversplitting as in https://api.case.law/v1/cases/12455275/?full_case=true with null-author opinion with complete text of:
+    > SEPARATE OPINION
 - Empty opinion as in https://api.case.law/v1/cases/12623718/?full_case=true
-    - Here this was an issue of picking the write opinion due to length heuristic
+    - Here this was an issue of picking the wrong opinion due to length heuristic
     - got https://cite.case.law/s-ct/139/626/12623718/
     - expected https://cite.case.law/s-ct/140/2412/12626632/
 
