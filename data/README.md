@@ -27,6 +27,7 @@ See [file](../null_authors.csv)
         - got https://cite.case.law/us/506/1087/12103909/
 - Oversplitting as in https://api.case.law/v1/cases/12455275/?full_case=true with null-author opinion with complete text of:
     > SEPARATE OPINION
+    - This is an issue of using the Lawyer's Edition reporter. US Reports version of this case doesn't have this.
 - Empty opinion as in https://api.case.law/v1/cases/12623718/?full_case=true
     - Here this was an issue of picking the wrong opinion due to length heuristic
     - got https://cite.case.law/s-ct/139/626/12623718/
