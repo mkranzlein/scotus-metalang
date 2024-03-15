@@ -36,7 +36,8 @@ See [file](../null_authors.csv)
 On rerun:
 - Get docket numbers from scdb
 - Get cases related to that docket number from CAP, with constraints of u.s. reports or s ct. reporter, (no l. ed.)
-- If there's a u.s. reports case with headmatter containing "argued" and "decided", pick that one.
+- If there's a u.s. reports case with headmatter containing "argued" and "decided", pick that one
+- Flag opinions that are less than x characters for manual review
 
 
 
