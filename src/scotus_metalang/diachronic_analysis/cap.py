@@ -5,7 +5,7 @@ from pathlib import Path
 
 import aiohttp
 
-from scotus_metalang.authors import AUTHOR_MAP
+from scotus_metalang.diachronic_analysis.authors import AUTHOR_MAP
 
 
 async def case_json_by_id(case_id: int, session: aiohttp.ClientSession) -> dict:
