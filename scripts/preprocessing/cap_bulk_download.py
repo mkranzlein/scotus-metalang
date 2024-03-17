@@ -56,7 +56,8 @@ docket_to_filepath = defaultdict(list)
 for case_path in Path(f"{data_path}/bulk_cap/unzipped").glob("*/*/json/*.json"):
     with open(case_path, "r") as f:
         case_json = json.load(f)
-        docket_to_filepath[case_json["docket_number"]].append(str(case_path))
+        docket_number = case_json["docket_number"].replace("–", "-")
+        docket_to_filepath[docket_number].append(str(case_path))
 
 docket_index_save_path = f"{data_path}/bulk_cap/docket_to_filepath.json"
 with open(docket_index_save_path, "w") as f:
