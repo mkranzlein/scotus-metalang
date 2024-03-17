@@ -9,7 +9,7 @@ Then run `get_cases_from_bulk_cap.py` to map SCDB cases to the downloaded CAP fi
 ../scotus-metalang$ python scripts/preprocessing/get_cases_from_bulk_cap.py
 ```
 
-Finally, run `TODO.py` to extract/split opinions from the selected CAP files:
+Finally, run `extract_and_split_opinions.py.py` to extract/split opinions from the selected CAP files:
 ```
-../scotus-metalang$ python scripts/preprocessing/TODO.py
+../scotus-metalang$ python scripts/preprocessing/extract_and_split_opinions.py
 ```
