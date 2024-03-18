@@ -1,5 +1,6 @@
-# Notebook for tinkering/debugging
+# Files for tinkering/debugging
 *scratch*.ipynb
+*scratch*.sql
 
 # Saved sentence segmenter model
 **/model-last*
