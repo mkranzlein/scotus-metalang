@@ -24,10 +24,19 @@ def get_scdb_id(citations: list[dict]) -> str:
             return citation["cite"].lstrip("SCDB ")
 
 
+def has_non_empty_opinion(opinions: list[dict]) -> bool:
+    for opinion in opinions:
+        if opinion["text"] != "":
+            return True
+    return False
+
+
 def filter_cases_with_authors(filepath_to_json: dict) -> list[str]:
     """Returns filepaths of cases with an author."""
     filtered_filepaths = []
     for filepath, case_json in filepath_to_json.items():
+        if not has_non_empty_opinion(case_json["casebody"]["opinions"]):
+            continue
         if case_json["casebody"]["opinions"][0]["author"] is not None:
             filtered_filepaths.append(filepath)
     return filtered_filepaths
@@ -37,6 +46,8 @@ def filter_by_word_count(filepath_to_json: dict, min_words=300) -> list[str]:
     """Returns filepaths where case word count is above a threshold."""
     filtered_filepaths = []
     for filepath, case_json in filepath_to_json.items():
+        if not has_non_empty_opinion(case_json["casebody"]["opinions"]):
+            continue
         case_word_count = case_json["analysis"]["word_count"]
         if case_word_count > min_words:
             filtered_filepaths.append(filepath)
@@ -45,7 +56,7 @@ def filter_by_word_count(filepath_to_json: dict, min_words=300) -> list[str]:
 
 def filter_candidate_filepaths(candidate_filepaths: list[str]) -> list[str]:
     if len(candidate_filepaths) == 1:
-        return [candidate_filepaths]
+        return candidate_filepaths
 
     filtered_filepath_to_json = {}
     for filepath in candidate_filepaths:
@@ -56,7 +67,7 @@ def filter_candidate_filepaths(candidate_filepaths: list[str]) -> list[str]:
         except KeyError:
             print("no opinions for ", filepath)
             continue
-        if len(opinions) == 1 and opinions[0]["text"] == "":
+        if not has_non_empty_opinion(opinions):
             continue
 
         if "/us/" in filepath:
@@ -77,7 +88,7 @@ def filter_candidate_filepaths(candidate_filepaths: list[str]) -> list[str]:
     return list(filtered_filepath_to_json.keys())
 
 
-def filter_cap_cases_by_docket(scdb_docket: str) -> list[str]:
+def filter_cap_cases_by_docket(scdb_docket: str, docket_to_filepath) -> list[str]:
     # The docket field in a CAP case can have multiple docket numbers separated by semi-colons
     # Further, multiple cap cases can have the same docket field
     # Find all matching docket fields and then get all matching filepaths
@@ -140,7 +151,7 @@ for scdb_case_id, docket in tqdm(list(zip(remaining_cases.caseId,
                                           remaining_cases.docket)),
                                  desc="Filtering CAP cases w/o SCDB ID",
                                  ncols=80, ):
-    candidate_filepaths = filter_cap_cases_by_docket(docket)
+    candidate_filepaths = filter_cap_cases_by_docket(docket, docket_to_filepath)
     num_matches[len(candidate_filepaths)] += 1
     if len(candidate_filepaths) == 1:
         scdb_case_id_to_filepath[scdb_case_id] = candidate_filepaths[0]
