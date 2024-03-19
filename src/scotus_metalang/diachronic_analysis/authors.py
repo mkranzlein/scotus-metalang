@@ -111,7 +111,6 @@ AUTHOR_MAP = {
     "justice_gorsuch,_concurring_in_part_and_dissenting_in_part.": "gorsuch",
     "justice_gorsuch,_concurring.": "gorsuch",
     "justice_gorsuch,_dissenting.": "gorsuch",
-    "justice_harlan,": "harlan",
     "justice_kagan_delivered_the_opinion_of_the_court.": "kagan",
     "justice_kagan_took_no_part_in_the_consideration_or_decision_of_this_case.": "special",
     "justice_kagan,_concurring.": "kagan",
