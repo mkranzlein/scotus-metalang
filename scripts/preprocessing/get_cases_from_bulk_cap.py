@@ -56,7 +56,16 @@ def filter_by_word_count(filepath_to_json: dict, min_words=300) -> list[str]:
 
 def filter_candidate_filepaths(candidate_filepaths: list[str]) -> list[str]:
     if len(candidate_filepaths) == 1:
-        return candidate_filepaths
+        with open(candidate_filepaths[0], "r") as f:
+            case_json = json.load(f)
+        try:
+            opinions = case_json["casebody"]["opinions"]
+        except KeyError:
+            print("no opinions for ", candidate_filepaths[0])
+        if has_non_empty_opinion(opinions):
+            return candidate_filepaths
+        else:
+            return []
 
     filtered_filepath_to_json = {}
     for filepath in candidate_filepaths:
