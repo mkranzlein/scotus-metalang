@@ -12,6 +12,7 @@ from tokenizers import pre_tokenizers
 from tokenizers.pre_tokenizers import Whitespace, Punctuation, Digits
 from torch.utils.data import DataLoader
 from transformers import BertTokenizerFast
+from transformers.utils import logging
 
 from scotus_metalang.core import datasets
 
@@ -23,6 +24,9 @@ ignoreables = torch.tensor([101, 0, 102], device=device)
 bert_tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased', do_lower_case=True)
 pre_tokenizer = pre_tokenizers.Sequence([Whitespace(), Punctuation(), Digits()])
 segmenter = spacy.load("segmenter/model-last")
+
+# Disable tokenization warning for too long sentence (messes up TQDM)
+logging.get_logger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
 
 
 def get_sentences(doc: spacy.tokens.doc.Doc) -> list[datasets.Sentence]:
