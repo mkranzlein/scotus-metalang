@@ -46,6 +46,14 @@ def get_actual_authors(opinions):
     return actual_authors
 
 
+def standardize_quotation_marks(text: str) -> str:
+    text = text.replace('“', '"')  # u201c
+    text = text.replace('”', '"')  # u201d
+    text = text.replace("‘", "'")  # u2018
+    text = text.replace("’", "'")  # u2019
+    return text
+
+
 def save_opinions(cap_filepath: str, scdb_id: str,
                   scdb_df):
     with open(cap_filepath, "r") as f:
@@ -71,7 +79,7 @@ def save_opinions(cap_filepath: str, scdb_id: str,
                          "term": term,
                          "author": author,
                          "type": opinion["type"],
-                         "text": opinion["text"]}
+                         "text": standardize_quotation_marks(opinion["text"])}
             filename = f"{docket}_{opinion_num}.json"
             if author in authors.ORDERED_JUSTICES:
                 save_path = Path(f"{data_path}/cap/known_authors/{author}")
@@ -105,7 +113,7 @@ def save_new_opinions(opinions: list[dict], scdb_id: str, scdb_df: pd.DataFrame)
                      "author": author,
                      "type": opinion["type"],
                      "resplit": True,
-                     "text": opinion["text"]}
+                     "text": standardize_quotation_marks(opinion["text"])}
         filename = f"{docket}_{opinion_num}.json"
         if author in authors.ORDERED_JUSTICES:
             save_path = Path(f"{data_path}/cap/known_authors/{author}")
