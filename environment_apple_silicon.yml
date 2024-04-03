@@ -6,6 +6,9 @@ dependencies:
   - huggingface::transformers
   - ipywidgets
   - jupyterlab
+  - matplotlib
+  - numpy
+  - pandas
   - pip
   - python
   - pytorch::pytorch
