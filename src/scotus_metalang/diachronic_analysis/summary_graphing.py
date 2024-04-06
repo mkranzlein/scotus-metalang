@@ -36,7 +36,8 @@ def get_opinion_types_by_term(opinions: list[dict]) -> dict:
     return opinion_types_by_term
 
 
-def plot_opinion_types_abs(opinion_types_by_author: dict[Counter]) -> Figure:
+def plot_opinion_types_abs(opinion_types_by_author: dict[Counter],
+                           title: str = "Opinion Types by author (absolute)") -> Figure:
     width = .5
     bottom = np.zeros(len(authors.ORDERED_JUSTICES))
     auths = list(authors.ORDERED_JUSTICES.keys())
@@ -48,11 +49,12 @@ def plot_opinion_types_abs(opinion_types_by_author: dict[Counter]) -> Figure:
 
     ax.tick_params(axis='x', labelrotation=90)
     ax.legend(loc="upper right")
-    ax.set_title("Opinion Types by author (absolute)")
+    ax.set_title(title)
     return fig
 
 
-def plot_opinion_types_norm(opinion_types_by_author: dict[Counter]) -> Figure:
+def plot_opinion_types_norm(opinion_types_by_author: dict[Counter],
+                            title: str = "Opinion Types by author (normalized)") -> Figure:
     width = .5
     bottom = np.zeros(len(authors.ORDERED_JUSTICES))
     auths = list(authors.ORDERED_JUSTICES.keys())
@@ -67,11 +69,12 @@ def plot_opinion_types_norm(opinion_types_by_author: dict[Counter]) -> Figure:
 
     ax.tick_params(axis='x', labelrotation=90)
     ax.legend()
-    ax.set_title("Opinion Types by author (normalized)")
+    ax.set_title(title)
     return fig
 
 
-def plot_opinion_types_by_term_abs(opinion_types_by_term: dict[Counter]) -> Figure:
+def plot_opinion_types_by_term_abs(opinion_types_by_term: dict[Counter],
+                                   title: str = "Opinion Types by term (absolute)") -> Figure:
     width = .5
     bottom = np.zeros(len(opinion_types_by_term.keys()))
     terms = sorted(opinion_types_by_term.keys())
@@ -83,11 +86,12 @@ def plot_opinion_types_by_term_abs(opinion_types_by_term: dict[Counter]) -> Figu
 
     ax.tick_params(axis='x', labelrotation=90)
     ax.legend(loc="upper right")
-    ax.set_title("Opinion Types by term (absolute)")
+    ax.set_title(title)
     return fig
 
 
-def plot_opinion_types_by_term_norm(opinion_types_by_term: dict[Counter]) -> Figure:
+def plot_opinion_types_by_term_norm(opinion_types_by_term: dict[Counter],
+                                    title: str = "Opinion Types by term (absolute)") -> Figure:
     width = .5
     bottom = np.zeros(len(opinion_types_by_term.keys()))
     terms = sorted(opinion_types_by_term.keys())
@@ -102,11 +106,12 @@ def plot_opinion_types_by_term_norm(opinion_types_by_term: dict[Counter]) -> Fig
 
     ax.tick_params(axis='x', labelrotation=90)
     ax.legend()
-    ax.set_title("Opinion Types by term (normalized)")
+    ax.set_title(title)
     return fig
 
 
-def plot_opinions_per_case_by_term(opinions: list[dict]) -> Figure:
+def plot_opinions_per_case(opinions: list[dict],
+                           title: str = "Opinions per Case") -> Figure:
     cases_per_term = defaultdict(set)
     num_opinions_per_term = Counter()
     for opinion in opinions:
@@ -117,5 +122,6 @@ def plot_opinions_per_case_by_term(opinions: list[dict]) -> Figure:
     averages = [num_opinions_per_term[term] / num_cases_per_term[term] for term in sorted(num_cases_per_term.keys())]
     fig, ax = plt.subplots()
     ax.bar(sorted(num_cases_per_term.keys()), averages)
+    ax.set_title(title)
     ax.tick_params(axis="x", labelrotation=90)
     return fig
