@@ -1,10 +1,7 @@
 import json
-import os
 from collections import Counter, defaultdict
-from pathlib import Path
 
 import numpy as np
-from dotenv import load_dotenv
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
@@ -12,14 +9,14 @@ from scotus_metalang.diachronic_analysis import authors
 
 
 def load_data(opinion_paths) -> list[dict]:
-    opinions = []   
+    opinions = []
     for filepath in opinion_paths:
         with open(filepath, "r") as f:
             opinion = json.load(f)
             opinions.append(opinion)
-            
 
-def get_opinion_types_by_author(opinions: list[dict]) -> dict:
+
+def get_opinion_types_by_author(opinions: list[dict]) -> dict[Counter]:
     opinion_types_by_author = defaultdict(Counter)
     for opinion in opinions:
         author = opinion["author"]
@@ -39,7 +36,7 @@ def get_opinion_types_by_term(opinions: list[dict]) -> dict:
     return opinion_types_by_term
 
 
-def plot_opinion_types_abs(opinion_types_by_author: dict) -> Figure:
+def plot_opinion_types_abs(opinion_types_by_author: dict[Counter]) -> Figure:
     width = .5
     bottom = np.zeros(len(authors.ORDERED_JUSTICES))
     auths = list(authors.ORDERED_JUSTICES.keys())
@@ -55,7 +52,7 @@ def plot_opinion_types_abs(opinion_types_by_author: dict) -> Figure:
     return fig
 
 
-def plot_opinion_types_norm(opinion_types_by_author) -> Figure:
+def plot_opinion_types_norm(opinion_types_by_author: dict[Counter]) -> Figure:
     width = .5
     bottom = np.zeros(len(authors.ORDERED_JUSTICES))
     auths = list(authors.ORDERED_JUSTICES.keys())
@@ -74,7 +71,7 @@ def plot_opinion_types_norm(opinion_types_by_author) -> Figure:
     return fig
 
 
-def plot_opinion_types_by_term_abs(opinion_types_by_term: dict) -> Figure:
+def plot_opinion_types_by_term_abs(opinion_types_by_term: dict[Counter]) -> Figure:
     width = .5
     bottom = np.zeros(len(opinion_types_by_term.keys()))
     terms = sorted(opinion_types_by_term.keys())
@@ -90,7 +87,7 @@ def plot_opinion_types_by_term_abs(opinion_types_by_term: dict) -> Figure:
     return fig
 
 
-def plot_opinion_types_by_term_norm(opinion_types_by_term) -> Figure:
+def plot_opinion_types_by_term_norm(opinion_types_by_term: dict[Counter]) -> Figure:
     width = .5
     bottom = np.zeros(len(opinion_types_by_term.keys()))
     terms = sorted(opinion_types_by_term.keys())
@@ -109,7 +106,7 @@ def plot_opinion_types_by_term_norm(opinion_types_by_term) -> Figure:
     return fig
 
 
-def plot_opinions_per_case_by_term(opinions):
+def plot_opinions_per_case_by_term(opinions: list[dict]) -> Figure:
     cases_per_term = defaultdict(set)
     num_opinions_per_term = Counter()
     for opinion in opinions:
@@ -121,4 +118,4 @@ def plot_opinions_per_case_by_term(opinions):
     fig, ax = plt.subplots()
     ax.bar(sorted(num_cases_per_term.keys()), averages)
     ax.tick_params(axis="x", labelrotation=90)
-    return averages, fig
+    return fig
