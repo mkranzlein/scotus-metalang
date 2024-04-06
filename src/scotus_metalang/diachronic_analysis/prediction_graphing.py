@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 from scotus_metalang.diachronic_analysis import authors
 
 
-def load_data(op_paths_to_pred_paths: dict[Path, Path]):
+def load_data(op_paths_to_pred_paths: dict[Path, Path]) -> pd.DataFrame:
     rows = []
     for opinion_path, prediction_path in op_paths_to_pred_paths.items():
         author = opinion_path.parent.name
@@ -32,7 +32,7 @@ def load_data(op_paths_to_pred_paths: dict[Path, Path]):
     return df_18
 
 
-def plot_cases_per_term(df, title="Cases per Term"):
+def plot_cases_per_term(df: pd.DataFrame, title: str = "Cases per Term") -> Figure:
     fig, ax = plt.subplots()
     cases_per_term = dict(df.groupby('term')["docket_number"].nunique())
     plt.plot(cases_per_term.keys(), cases_per_term.values())
@@ -41,7 +41,7 @@ def plot_cases_per_term(df, title="Cases per Term"):
     return fig
 
 
-def plot_avg_opinions_per_case(df, title="Opinions per Case"):
+def plot_avg_opinions_per_case(df: pd.DataFrame, title: str = "Opinions per Case") -> Figure:
     fig, ax = plt.subplots()
     cases_per_term = dict(df.groupby('term')["docket_number"].nunique())
     opinions_per_term = dict(df.groupby("term").size())
@@ -53,7 +53,7 @@ def plot_avg_opinions_per_case(df, title="Opinions per Case"):
     return fig
 
 
-def plot_opinion_length_per_term(df, title="Wordpiece Tokens per Opinion"):
+def plot_opinion_length_per_term(df: pd.DataFrame, title="Wordpiece Tokens per Opinion") -> Figure:
     fig, ax = plt.subplots()
     tokens_per_term = dict(df.groupby("term")["tokens"].mean())
     ax.plot(tokens_per_term.keys(), tokens_per_term.values())
@@ -62,7 +62,7 @@ def plot_opinion_length_per_term(df, title="Wordpiece Tokens per Opinion"):
     return fig, ax
 
 
-def plot_frequency_by_author(category, df, title=None):
+def plot_frequency_by_author(category: str, df: pd.DataFrame, title=None) -> Figure:
     if title is None:
         title = f"Rates of {category} by Author"
     fig, ax = plt.subplots()
@@ -75,7 +75,7 @@ def plot_frequency_by_author(category, df, title=None):
     return fig, ax
 
 
-def plot_frequency_by_term(category, df, title=None):
+def plot_frequency_by_term(category: str, df: pd.DataFrame, title=None) -> Figure:
     if title is None:
         title = f"Rates of {category} by Term"
     fig, ax = plt.subplots()
@@ -88,7 +88,7 @@ def plot_frequency_by_term(category, df, title=None):
     return fig
 
 
-def plot_frequency_line_with_trend(df: pd.DataFrame, category):
+def plot_frequency_line_with_trend(df: pd.DataFrame, category: str) -> Figure:
     df1 = df.copy()
     df1[f"{category}_rate"] = df1[category] / df1.tokens
     df_grouped = df1[["term", f"{category}_rate"]].groupby(["term"]).agg(["mean", "std", "count"])
@@ -124,7 +124,7 @@ def plot_frequency_line_all_cats(df: pd.DataFrame) -> Figure:
     return fig
 
 
-def plot_frequency_by_type(category, op_type, df):
+def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str):
     fig, ax = plt.subplots()
     df_sample = df[df["opinion_type"] == op_type]
     cat_by_term = dict(df_sample.groupby(["term"])[category].sum())
