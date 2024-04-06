@@ -124,7 +124,7 @@ def plot_frequency_line_all_cats(df: pd.DataFrame) -> Figure:
     return fig
 
 
-def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str):
+def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str) -> Figure:
     fig, ax = plt.subplots()
     df_sample = df[df["opinion_type"] == op_type]
     cat_by_term = dict(df_sample.groupby(["term"])[category].sum())
@@ -135,3 +135,4 @@ def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str):
     title = f"Rates of {category} by {op_type}"
     ax.title(title)
     ax.show()
+    return fig
