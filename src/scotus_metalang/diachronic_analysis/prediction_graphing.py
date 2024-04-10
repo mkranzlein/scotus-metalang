@@ -38,21 +38,21 @@ def plot_opinion_length_per_term(df: pd.DataFrame) -> Figure:
     ax.plot(tokens_per_term.keys(), tokens_per_term.values())
     ax.set_title("Wordpiece Tokens per Opinion")
     ax.tick_params(axis='x', labelrotation=90)
-    return fig, ax
+    return fig
 
 
-def plot_frequency_by_author(category: str, df: pd.DataFrame) -> Figure:
+def plot_frequency_by_author(df: pd.DataFrame, category: str) -> Figure:
     fig, ax = plt.subplots()
-    cat_by_author = dict(df.groupby(['author'])[category].sum())
-    tokens_by_author = dict(df.groupby(['author'])["tokens"].sum())
+    cat_by_author = dict(df.groupby(["author"])[category].sum())
+    tokens_by_author = dict(df.groupby(["author"])["tokens"].sum())
     frequencies_by_author = [cat_by_author[a] / tokens_by_author[a] for a in authors.ORDERED_JUSTICES]
     ax.tick_params(axis='x', labelrotation=90)
     ax.bar(authors.ORDERED_JUSTICES.keys(), frequencies_by_author)
     ax.set_title(f"Rates of {category} by Author")
-    return fig, ax
+    return fig
 
 
-def plot_frequency_by_term(category: str, df: pd.DataFrame) -> Figure:
+def plot_frequency_by_term(df: pd.DataFrame, category: str) -> Figure:
     fig, ax = plt.subplots()
     cat_by_term = dict(df.groupby(["term"])[category].sum())
     tokens_by_term = dict(df.groupby(["term"])["tokens"].sum())
@@ -88,7 +88,7 @@ def plot_frequency_line_with_trend(df: pd.DataFrame, category: str,
     return fig
 
 
-def plot_frequency_line_all_cats(df: pd.DataFrame, ci_interval: bool = False,) -> Figure:
+def plot_frequency_line_all_cats(df: pd.DataFrame, ci: bool = False,) -> Figure:
     fig, axs = plt.subplots(2, 2, figsize=(12, 6))
     categories = ["ft", "mc", "dq", "les"]
     for category, ax in zip(categories, axs.flatten()):
@@ -102,7 +102,7 @@ def plot_frequency_line_all_cats(df: pd.DataFrame, ci_interval: bool = False,) -
         ax.plot(term, df_grouped["mean"])
         ax.plot(term, p(term))
 
-        if ci_interval:
+        if ci:
             df_grouped['ci'] = 1.96 * df_grouped['std'] / np.sqrt(df_grouped['count'])
             df_grouped['ci_lower'] = df_grouped['mean'] - df_grouped['ci']
             df_grouped['ci_upper'] = df_grouped['mean'] + df_grouped['ci']
@@ -111,18 +111,4 @@ def plot_frequency_line_all_cats(df: pd.DataFrame, ci_interval: bool = False,) -
 
         ax.set_ylim(ymin=0)
         ax.set_title("Rate of " + category)
-    return fig
-
-
-def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str) -> Figure:
-    fig, ax = plt.subplots()
-    df_sample = df[df["opinion_type"] == op_type]
-    cat_by_term = dict(df_sample.groupby(["term"])[category].sum())
-    tokens_by_term = dict(df_sample.groupby(["term"])["tokens"].sum())
-    frequencies_by_term = [cat_by_term[term] / tokens_by_term[term] for term in cat_by_term]
-    ax.tick_params(axis='x', labelrotation=90)
-    ax.bar(cat_by_term.keys(), frequencies_by_term)
-    title = f"Rates of {category} by {op_type}"
-    ax.set_title(title)
-    ax.show()
     return fig
