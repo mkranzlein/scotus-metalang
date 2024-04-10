@@ -36,8 +36,8 @@ def plot_opinion_length_per_term(df: pd.DataFrame) -> Figure:
     fig, ax = plt.subplots()
     tokens_per_term = dict(df.groupby("term")["tokens"].mean())
     ax.plot(tokens_per_term.keys(), tokens_per_term.values())
-    ax.title("Wordpiece Tokens per Opinion")
-    ax.xticks(rotation=90)
+    ax.set_title("Wordpiece Tokens per Opinion")
+    ax.tick_params(axis='x', labelrotation=90)
     return fig, ax
 
 
@@ -46,9 +46,9 @@ def plot_frequency_by_author(category: str, df: pd.DataFrame) -> Figure:
     cat_by_author = dict(df.groupby(['author'])[category].sum())
     tokens_by_author = dict(df.groupby(['author'])["tokens"].sum())
     frequencies_by_author = [cat_by_author[a] / tokens_by_author[a] for a in authors.ORDERED_JUSTICES]
-    ax.xticks(rotation=90)
+    ax.tick_params(axis='x', labelrotation=90)
     ax.bar(authors.ORDERED_JUSTICES.keys(), frequencies_by_author)
-    ax.title(f"Rates of {category} by Author")
+    ax.set_title(f"Rates of {category} by Author")
     return fig, ax
 
 
@@ -57,9 +57,9 @@ def plot_frequency_by_term(category: str, df: pd.DataFrame) -> Figure:
     cat_by_term = dict(df.groupby(["term"])[category].sum())
     tokens_by_term = dict(df.groupby(["term"])["tokens"].sum())
     frequencies_by_term = [cat_by_term[term] / tokens_by_term[term] for term in cat_by_term]
-    ax.xticks(rotation=90)
+    ax.tick_params(axis='x', labelrotation=90)
     ax.bar(cat_by_term.keys(), frequencies_by_term)
-    ax.title(f"Rates of {category} by Term")
+    ax.set_title(f"Rates of {category} by Term")
     return fig
 
 
@@ -120,9 +120,9 @@ def plot_frequency_by_type(df: pd.DataFrame, category: str, op_type: str) -> Fig
     cat_by_term = dict(df_sample.groupby(["term"])[category].sum())
     tokens_by_term = dict(df_sample.groupby(["term"])["tokens"].sum())
     frequencies_by_term = [cat_by_term[term] / tokens_by_term[term] for term in cat_by_term]
-    ax.xticks(rotation=90)
+    ax.tick_params(axis='x', labelrotation=90)
     ax.bar(cat_by_term.keys(), frequencies_by_term)
     title = f"Rates of {category} by {op_type}"
-    ax.title(title)
+    ax.set_title(title)
     ax.show()
     return fig
