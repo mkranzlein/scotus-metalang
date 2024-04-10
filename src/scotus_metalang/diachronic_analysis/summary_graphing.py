@@ -2,6 +2,7 @@ import json
 from collections import Counter, defaultdict
 
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
@@ -14,6 +15,27 @@ def load_data(opinion_paths) -> list[dict]:
         with open(filepath, "r") as f:
             opinion = json.load(f)
             opinions.append(opinion)
+
+
+def plot_cases_per_term(df: pd.DataFrame) -> Figure:
+    fig, ax = plt.subplots()
+    cases_per_term = dict(df.groupby('term')["docket_number"].nunique())
+    ax.plot(cases_per_term.keys(), cases_per_term.values())
+    ax.xticks(rotation=90)
+    ax.title("Cases per Term")
+    return fig
+
+
+def plot_avg_opinions_per_case(df: pd.DataFrame) -> Figure:
+    fig, ax = plt.subplots()
+    cases_per_term = dict(df.groupby('term')["docket_number"].nunique())
+    opinions_per_term = dict(df.groupby("term").size())
+    average_per_term = [opinions_per_term[term] / cases_per_term[term] for term in cases_per_term]
+    ax.plot(cases_per_term.keys(), average_per_term)
+    ax.xticks(rotation=90)
+    ax.ylim(1, 3)
+    ax.title("Opinions per Case")
+    return fig
 
 
 def get_opinion_types_by_author(opinions: list[dict]) -> dict[Counter]:
