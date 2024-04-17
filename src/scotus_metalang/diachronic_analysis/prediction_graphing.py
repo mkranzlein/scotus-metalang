@@ -46,8 +46,9 @@ def plot_frequency_by_author(df: pd.DataFrame, category: str) -> Figure:
     cat_by_author = dict(df.groupby(["author"])[category].sum())
     tokens_by_author = dict(df.groupby(["author"])["tokens"].sum())
     frequencies_by_author = [cat_by_author[a] / tokens_by_author[a] for a in authors.ORDERED_JUSTICES]
+    colors = ["blue" if authors.JUSTICE_TO_IDEOLOGY[a] == "liberal" else "red" for a in authors.ORDERED_JUSTICES]
     ax.tick_params(axis='x', labelrotation=90)
-    ax.bar(authors.ORDERED_JUSTICES.keys(), frequencies_by_author)
+    ax.bar(authors.ORDERED_JUSTICES.keys(), frequencies_by_author, color=colors)
     ax.set_title(f"Rates of {category} by Author")
     return fig
 
@@ -111,4 +112,37 @@ def plot_frequency_line_all_cats(df: pd.DataFrame, ci: bool = False,) -> Figure:
 
         ax.set_ylim(ymin=0)
         ax.set_title("Rate of " + category)
+    return fig
+
+
+def plot_frequency_line_all_cats_ideology(df: pd.DataFrame, ci: bool = False,) -> Figure:
+    fig, axs = plt.subplots(2, 2, figsize=(12, 6))
+    for ideology in ["liberal", "conservative"]:
+        if ideology == "liberal":
+            color = "blue"
+        else:
+            color = "red"
+        ideology_justices = [k for k, v in authors.JUSTICE_TO_IDEOLOGY.items() if v == ideology]
+        sample = df[df["author"].isin(ideology_justices)]
+        categories = ["ft", "mc", "dq", "les"]
+        for category, ax in zip(categories, axs.flatten()):
+            df1 = sample.copy()
+            df1[f"{category}_rate"] = df1[category] / df1.tokens
+            df_grouped = df1[["term", f"{category}_rate"]].groupby(["term"]).agg(["mean", "std", "count"])
+            df_grouped = df_grouped.droplevel(axis=1, level=0).reset_index()
+            term = df_grouped["term"].astype(float)
+            trend = polynomial.polyfit(term, df_grouped["mean"], 1)
+            p = polynomial.Polynomial(trend)
+            ax.plot(term, df_grouped["mean"], color=color)
+            ax.plot(term, p(term), color=color)
+
+            if ci:
+                df_grouped['ci'] = 1.96 * df_grouped['std'] / np.sqrt(df_grouped['count'])
+                df_grouped['ci_lower'] = df_grouped['mean'] - df_grouped['ci']
+                df_grouped['ci_upper'] = df_grouped['mean'] + df_grouped['ci']
+                ax.fill_between(term, df_grouped['ci_lower'], df_grouped['ci_upper'],
+                                color='b', alpha=.15)
+
+            ax.set_ylim(ymin=0)
+            ax.set_title("Rate of " + category)
     return fig
