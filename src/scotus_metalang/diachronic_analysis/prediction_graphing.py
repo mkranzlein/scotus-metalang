@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 from scotus_metalang.diachronic_analysis import authors
 
 
-def load_data(op_paths_to_pred_paths: dict[Path, Path]) -> pd.DataFrame:
+def load_predictions(op_paths_to_pred_paths: dict[Path, Path]) -> pd.DataFrame:
     rows = []
     for opinion_path, prediction_path in op_paths_to_pred_paths.items():
         author = opinion_path.parent.name
@@ -20,7 +20,7 @@ def load_data(op_paths_to_pred_paths: dict[Path, Path]) -> pd.DataFrame:
             opinion_type = case["type"]
             docket_number = case["docket"]
         scores = np.loadtxt(prediction_path)
-        threshold = .60
+        threshold = .5
         num_tokens = len(scores)
         predictions = scores > threshold
         ft, mc, dq, les = np.sum(predictions, axis=0)
@@ -30,6 +30,26 @@ def load_data(op_paths_to_pred_paths: dict[Path, Path]) -> pd.DataFrame:
     df_all = pd.DataFrame(rows, columns=columns)
     df_18 = df_all[df_all["term"].astype(int) < 2019]  # Exclude 2019 data because that's training data
     return df_18
+
+
+def plot_si_vs_nsi_ops(si_df, nsi_df):
+    fig, ax = plt.subplots()
+    terms = list(range(1986, 2019))
+    si_vals = [len(si_df[si_df["term"] == str(t)]) for t in terms]
+    nsi_vals = [len(nsi_df[nsi_df["term"] == str(t)]) for t in terms]
+    totals = [s + n for n, s in zip(si_vals, nsi_vals)]
+    si_ratios = [s / t for s, t in zip(si_vals, totals)]
+    nsi_ratios = [1 - s for s in si_ratios]
+    width = .5
+    bottom = np.zeros(len(terms))
+    ax.bar(terms, si_ratios, width, label="SI", bottom=bottom, color="blue")
+    bottom += si_ratios
+    ax.bar(terms, nsi_ratios, width, label="NSI", bottom=bottom, color="orange")
+
+    ax.tick_params(axis='x', labelrotation=90)
+    ax.legend(loc="upper right")
+    ax.set_title("Statutory Interpretation Opinions vs Non-Statutory Interpretation Opinions")
+    return fig
 
 
 def plot_opinion_length_per_term(df: pd.DataFrame) -> Figure:
