@@ -20,6 +20,7 @@ dependencies:
   - python
   - python-dotenv
   - pyg::pyg  # PyTorch Geometric for HiPool
+  - seaborn
   - spacy=3.4.3
   - spacy-transformers
   - tensorboard
